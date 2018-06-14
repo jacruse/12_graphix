@@ -67,12 +67,12 @@ void first_pass() {
   num_frames = 1;
   for (i=0;i<lastop;i++){
     switch (op[i].opcode){
-      case FRAMES:
-        num_frames = op[i].op.frames.num_frames;
-        break;
       case BASENAME:
         strcpy(name, op[i].op.basename.p->name);
         name_exist = 1;
+        break;
+      case FRAMES:
+        num_frames = op[i].op.frames.num_frames;
         break;
       case VARY:
         if(num_frames == 1){
@@ -114,8 +114,8 @@ struct vary_node ** second_pass() {
         for(k=op[i].op.vary.start_frame; k <= op[i].op.vary.end_frame; k++){
           struct vary_node * knob = (struct vary_node*)malloc(sizeof(struct vary_node));
           strcpy(knob->name, op[i].op.vary.p->name);
-          knob->value = op[i].op.vary.start_val + d*(k - op[i].op.vary.start_frame);
           knob->next = list[k];
+          knob->value = op[i].op.vary.start_val + d*(k - op[i].op.vary.start_frame);
           list[k] = knob;
         }
     }
